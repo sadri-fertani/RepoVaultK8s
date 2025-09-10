@@ -1,7 +1,8 @@
 {
   "profiles": {
     "POC.ShowEnvironmentVariables": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "var01 var02"
     },
     "Container (Dockerfile)": {
       "commandName": "Docker"

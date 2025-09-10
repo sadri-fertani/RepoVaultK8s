@@ -45,7 +45,7 @@ Voir fichiers dans ce repertoire :
 
 ```
 terraform init
-terraform apply -var="vault_token=root"
+terraform apply -var="vault_token={secret}"
 ```
 
 ```
@@ -109,3 +109,10 @@ Key     Value
 ---     -----
 data    map[db_pass:motdepasse123 db_user:admin]
 ```
+
+Secret dans k8s pour tester
+```
+kubectl create secret generic mon-secret --from-literal=app_user=user01 --from-literal=app_pass=pass01 -n poc-space
+```
+
+vault policy write mon-app-policy mon-app-policy.hcl

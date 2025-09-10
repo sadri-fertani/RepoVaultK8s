@@ -1,0 +1,7 @@
+apiVersion: v2
+name: showenvs
+icon: file://assets/icon.png
+description: Déploiement d'une app console qui liste les variables d'environnement
+type: application
+version: 0.1.0
+appVersion: "1.0"

@@ -1,0 +1,32 @@
+namespace: poc-space
+
+image:
+  repository: sadrifertani/showenvs
+  tag: latest
+  pullPolicy: Always
+
+containerPort: 8000
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+ingress:
+  enabled: false
+  
+env:
+  - name: "ASPNETCORE_ENVIRONMENT"
+    value: "Production"
+  - name: "APP__USER"
+    valueFrom:
+      secretKeyRef:
+        name: mon-secret
+        key: app_user
+  - name: "APP__PASS"
+    valueFrom:
+      secretKeyRef:
+        name: mon-secret
+        key: app_pass
+
+resources: {}

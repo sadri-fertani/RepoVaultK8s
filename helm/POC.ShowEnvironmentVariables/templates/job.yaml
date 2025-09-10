@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Chart.Name }}-job"
+  namespace: {{ .Values.namespace }}
+spec:
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+        traffic.sidecar.istio.io/excludeOutboundPorts: "8200"
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      serviceAccountName: default
+      restartPolicy: Never
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}          
+          args: ["arg01", "arg02"]
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          env:
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              {{- if .value }}
+              value: {{ .value | quote }}
+              {{- else if .valueFrom }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .valueFrom.secretKeyRef.name | quote }}
+                  key: {{ .valueFrom.secretKeyRef.key | quote }}
+              {{- end }}
+            {{- end }}
+          
+
+
