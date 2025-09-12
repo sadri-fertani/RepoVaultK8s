@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: showenvscronjob
+  namespace: cronjob-space
+spec:
+  schedule: "*/30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: showenvscronjob
+            image: "sadrifertani/showenvs:latest"
+            args: ["arg01", "arg02", "arg03", "arg04"]
+            env:
+            - name: "APP__USER"
+              valueFrom:
+                secretKeyRef:
+                  name: mon-secret
+                  key: app_user2
+            - name: "APP__PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: mon-secret
+                  key: app_pass2
+          restartPolicy: OnFailure
